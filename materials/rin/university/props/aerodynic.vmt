@@ -1,0 +1,7 @@
+"DecalModulate"
+{
+	"$basetexture" "rin/university/props/aerodynic"
+	"$model" "1"
+	"$nocull" "1"
+}
+

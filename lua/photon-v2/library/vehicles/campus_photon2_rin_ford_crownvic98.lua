@@ -13,7 +13,7 @@ VEHICLE.Equipment = {
 		Category = "Livery",
 		Options = {
 			{
-				Option = "Blue",
+				Option = "Police",
 				SubMaterials = {
 					{ Id = 3, Material = "rin/university/crownvic98/police" }
 				},

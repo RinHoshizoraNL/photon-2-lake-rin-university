@@ -13,7 +13,7 @@ VEHICLE.Equipment = {
 		Category = "Livery",
 		Options = {
 			{
-				Option = "Blue",
+				Option = "Police",
 				SubMaterials = {
 					{ Id = 7, Material = "rin/university/crownvic87/police" },
 				},
@@ -42,28 +42,13 @@ VEHICLE.Equipment = {
 		Category = "Lightbar",
 		Options = {
 			{
-				Option = "Federal Signal Jetstream",
+				Option = "Federal Signal Aerodynic",
 				Components = {
 					{
-						Component = "fedsig_aerodynic",
+						Component = "photon_fedsig_aerodynic_lrupd",
 						Position = Vector( 0, -19.5, 59.5 ),
 						Angles = Angle( 0, 180, 0 ),
 						Scale = 0.97,
-						States = {
-							[1] = "B",
-							[2] = "B",
-							[3] = "B",
-							[4] = "B",
-							[5] = "B",
-							[6] = "B",
-							[7] = "B",
-							[8] = "B",
-							[9] = "B",
-							[10] = "B",
-						},
-						SubMaterials = {
-							[2] = "schmal/photon/fedsig_legend/dome_r",
-						},
 					},
 				}
 			},

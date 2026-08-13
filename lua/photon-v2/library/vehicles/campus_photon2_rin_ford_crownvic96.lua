@@ -13,7 +13,7 @@ VEHICLE.Equipment = {
 		Category = "Livery",
 		Options = {
 			{
-				Option = "Blue",
+				Option = "Police",
 				SubMaterials = {
 					{ Id = 6, Material = "rin/university/crownvic96/police" }
 				},
@@ -146,7 +146,7 @@ VEHICLE.Equipment = {
 			{
 				Option = "Police Equipment",
 				BodyGroups = {
-					{ BodyGroup = "pillars", Value = 1 },
+					{ BodyGroup = "pillars", Value = 0 },
 				},
 				Props = {
 					{
