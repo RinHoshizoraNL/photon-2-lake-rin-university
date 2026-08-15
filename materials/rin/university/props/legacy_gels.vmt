@@ -1,0 +1,8 @@
+"DecalModulate"
+{
+	"$basetexture" "rin/university/props/legacy_gels"
+	"$model" "1"
+                "$translucent" "0"
+                "$nocull" "0"
+                "$nowritez" "1"
+}

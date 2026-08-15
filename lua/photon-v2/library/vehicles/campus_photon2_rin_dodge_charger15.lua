@@ -44,7 +44,7 @@ VEHICLE.Equipment = {
 						Position = Vector(0, 120, 27.1),
 						Angles = Angle(0, -90, 0),
 						Scale = 0,
-						Siren = "whelen_epsilon"
+						Siren = "whelen_gamma_new"
 					},
 				}
 			},
@@ -76,11 +76,28 @@ VEHICLE.Equipment = {
 				Option = "Whelen Legacy",
 				Components = {
 					{
-						Component = "photon_whe_legacy_44",
-						Position = Vector( 0, -17, 74.9 ),
+						Component = "photon_whe_legacy_48",
+						Position = Vector( 0, -18, 75 ),
 						Angles = Angle( 0, 90, 0 ),
-						Scale = 1.05,
-					},
+						Scale = 0.99,
+						BodyGroups = {
+							["takedown"] = 0,
+							["alley"] = 0,
+							["cable"] = 0,
+							["clamps"] = 1,
+							["feet"] = 1,
+							["gels"] = 2
+						},
+						Bones = {
+							["foot_low_left"]		=	{ Vector( 0, 0, 0), Angle( 0, 0, 0 ), 1 },
+							["foot_low_right"]		=	{ Vector( 0, 0, 0), Angle( 0, 0, 0 ), 1 },
+							["clamp_low_left"]		=	{ Vector( 0.8, 0, -0.035), Angle( 0, 0, 0 ), 1 },
+							["clamp_low_right"]		=	{ Vector( -0.8, 0, -0.035), Angle( 0, 0, 0 ), 1 }
+						},
+						SubMaterials = {
+							[3] = "rin/university/props/legacy_gels",
+						}
+					}
 				}
 			}
 		}
