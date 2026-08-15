@@ -70,13 +70,50 @@ VEHICLE.Equipment = {
 		}
 	},
 	{
+		Category = "Standard",
+		Options = {
+			{
+				Option = "Standard",
+				Components = {
+					{
+						Component = "photon_standard_sgmchar15",
+						Segments = {
+							TailFlasherSCPD = {
+								Frames = {
+									[1] = "10 13 14 15 16",
+
+									[2] = "10 15 16",
+									[3] = "13 14",
+								},
+								Sequences = {
+									["OFF"] = { 0 },
+
+									["STAGE3"] = sequence():QuadFlash(2,3)
+								}
+							}
+						},
+						Inputs = {
+							["Emergency.Warning"] = {
+								["MODE2"] = {},
+								["MODE3"] = {
+									WigWag = "WIGWAG",
+									TailFlasherSCPD = "STAGE3"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	{
 		Category = "Lightbar",
 		Options = {
 			{
 				Option = "Whelen Legacy",
 				Components = {
 					{
-						Component = "photon_whe_legacy_48",
+						Component = "photon_whe_legacy_48_lrupd",
 						Position = Vector( 0, -18, 75 ),
 						Angles = Angle( 0, 90, 0 ),
 						Scale = 0.99,
@@ -103,30 +140,89 @@ VEHICLE.Equipment = {
 		}
 	},
     {
-		Category = "Grille",
+		Category = "Front Lighting Setup",
 		Options = {
 			{
-				Option = "Whelen Ions",
+				Option = "Setup #1",
 				Components = {
 					{
+						Name = "@grille_ion",
 						Component = "photon_whe_ion",
-						Position = Vector( 12, 112.2, 36.8 ),
+						Position = Vector( 12, 112.4, 36.6 ),
 						Angles = Angle( -0.5, -8, 0 ),
-						Scale = 1,
-                        States = {
-							[1] = "B",
+						Scale = 0.75,
+                        States = { "B" },
+						Segments = {
+							LightSCPD = {
+								Frames = {
+									[1] = "Light"
+								},
+								Sequences = {
+									["DEBUG"] = { 1 },
+
+									["STAGE1"] = sequence():Alternate(1,0,10):SetTiming(1/30),
+									["STAGE3"] = sequence():FlashHold(1,2,4):AppendPhaseGap():SetTiming(1/30)
+								}
+							},
 						},
+						Inputs = {
+							["Emergency.Warning"] = {
+								["MODE1"] = {},
+								["MODE2"] = { LightSCPD = "STAGE1" },
+								["MODE3"] = { LightSCPD = "STAGE3" }
+							}
+						}
 					},
                     {
-						Component = "photon_whe_ion",
-						Position = Vector( -12, 112.2, 36.8 ),
+						Inherit = "@grille_ion",
+						Position = Vector( -12, 112.4, 36.6 ),
 						Angles = Angle( 0.5, 8, 0 ),
-						Scale = 1,
-                        States = {
-							[1] = "B",
-						},
-                        Phase = 45,
+						Inputs = {
+							["Emergency.Warning"] = {
+								["MODE3"] = { LightSCPD = "STAGE3:180" }
+							}
+						}
 					},
+					{
+						Name = "@front_lower_vertex",
+						Component = "lr_anemolis_whelen_vertex",
+						Position = Vector( -23.5, 115, 19 ),
+						Angles = Angle( -90-16, -55, 0 ),
+						Scale = 1,
+						States = {
+							[1] = "B",
+							[2] = "W"
+						},
+						Segments = {
+							whelen_vertex_SCPD = {
+								Frames = {
+									[1] = "2",
+									[2] = "3"
+								},
+								Sequences = {
+									["STAGE1"] = sequence():Alternate(1,2,10):SetTiming(1/30),
+									["STAGE3"] = sequence():FlashHold(1,2,4):FlashHold(2,2,4):SetTiming(1/30)
+								}
+							}
+						},
+						Inputs = {
+							["Emergency.Warning"] = {
+								["MODE1"] = {},
+								["MODE2"] = { whelen_vertex_SCPD = "STAGE1:180" },
+								["MODE3"] = { whelen_vertex_SCPD = "STAGE3" }
+							}
+						}
+					},
+					{
+						Inherit = "@front_lower_vertex",
+						Position = Vector( 23.5, 115, 19 ),
+						Angles = Angle( 90+16, 55, 0 ),
+						Inputs = {
+							["Emergency.Warning"] = {
+								["MODE3"] = { whelen_vertex_SCPD = "STAGE3:180" }
+							}
+						}
+					}
 				}
 			}
 		}
@@ -138,26 +234,43 @@ VEHICLE.Equipment = {
 				Option = "Whelen Ion",
 				Components = {
 					{
+						Inherit = "@grille_ion",
+						Name = "@rear_deck_ion",
 						Component = "photon_whe_ion_surface_bracket",
 						Position = Vector( 12, -85, 57.8 ),
 						Angles = Angle( 180, 0, 180 ),
-						Scale = 1,
-                        States = {
+						States = {
 							[1] = "B",
 						},
-						RenderGroup = RENDERGROUP_OPAQUE,
+						Segments = {
+							LightSCPD = {
+								Sequences = {
+									["STAGE3ALT"] = sequence():Alternate(1,0,3):SetTiming(1/30)
+								}
+							}
+						},
+						Inputs = {
+							["Emergency.Warning"] = {
+								["MODE1"] = { LightSCPD = "STAGE1" },
+								["MODE2"] = { LightSCPD = "STAGE1" },
+								["MODE3"] = { LightSCPD = "STAGE3ALT" }
+							}
+						},
+						RenderGroup = RENDERGROUP_OPAQUE
 					},
                     {
-						Component = "photon_whe_ion_surface_bracket",
+						Inherit = "@rear_deck_ion",
 						Position = Vector( -12, -85, 57.8 ),
 						Angles = Angle( 180, 0, 180 ),
-						Scale = 1,
-                        States = {
-							[1] = "B",
+						Inputs = {
+							["Emergency.Warning"] = {
+								["MODE3"] = {
+									LightSCPD = "STAGE3ALT"
+								}
+							}
 						},
-                        Phase = 90,
-						RenderGroup = RENDERGROUP_OPAQUE,
-					},
+						RenderGroup = RENDERGROUP_OPAQUE
+					}
 				}
 			}
 		}

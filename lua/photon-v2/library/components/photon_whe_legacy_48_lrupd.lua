@@ -186,115 +186,63 @@ COMPONENT.ElementGroups = {
 	["Right_Corner"] = { 14, 16, 18, 20, 22, 24 },
 }
 
-COMPONENT.StateMap = "[1/2] 1 3 5 7 9 11 13 15 17 19 21 23 25 27 29 31 33 35 37 [1/2] 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38 [W] 39 40 41 42"
+COMPONENT.StateMap = "[B] 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 30 32 34 36 38 40 [R] 29 31 33 35 37 39 [A] 25 26 27 28 [W] 39 40 41 42"
 
 COMPONENT.Segments = {
 	All = {
 		Frames = {
-			[1] = "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42",
-			[2] = "[1] Left_Front [2] Right_Rear",
-			[3] = "[2] Right_Front [1] Left_Rear",
-			[4] = "[1] Left_Front Left_Rear [2] Right_Front Right_Rear",
+			[1] = "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38",
 
+			[2] = "1 2 3 4 33 34 35 36 37 38 Left_Corner Right_Corner",
+			[3] = "1 2 3 4 33 34 35 36 37 38",
+			[4] = "1 2 3 4 5 6 7 8 29 30 31 32 33 34 35 36 37 38",
+			[5] = "5 6 7 8 29 30 31 32",
+			[6] = "5 6 7 8 9 10 11 12 25 26 27 28 29 30 31 32",
+			[7] = "9 10 11 12 25 26 27 28",
+			[8] = "9 10 11 12 25 26 27 28 Left_Corner Right_Corner",
+			[9] = "Left_Corner Right_Corner",
+			--
+			[10] = "1 2 3 4 33 34 35 36 37 38 Left_Corner Right_Corner",
+			[11] = "Left_Corner Right_Corner",
+			[12] = "9 10 11 12 25 26 27 28 Left_Corner Right_Corner",
+			[13] = "9 10 11 12 25 26 27 28",
+			[14] = "5 6 7 8 9 10 11 12 25 26 27 28 29 30 31 32",
+			[15] = "5 6 7 8 29 30 31 32",
+			[16] = "1 2 3 4 5 6 7 8 29 30 31 32 33 34 35 36 37 38",
+			[17] = "1 2 3 4 33 34 35 36 37 38",
+			
+			[18] = "25 26 27 28",
+			[19] = "29 30 31 32",
+
+			[20] = "9 10 11 12 25 26 27 28",
+			[21] = "5 6 7 8 29 30 31 32 Left_Corner Right_Corner",
 		},
 		Sequences = {
-			["ON"] = { 1 },
-			["ALT"] = sequence():Alternate( 2, 3, 2 ),
-			["BLINK"] = sequence():Alternate( 4, 0, 4 ),
-			-- ["ALT"] = sequence():Alternate( 4, 5, 12 )
+			["DEBUG"] = { 1 },
+
+			["STAGE1"] = sequence():Alternate(18,19,10):SetTiming(1/30),
+			["STAGE2"] = sequence():Alternate(20,21,10):SetTiming(1/30),
+			["STAGE3"] = sequence()
+				:Sequential(2,9):Do(4)
+				:Add(2,0,3,0,4,0,5,0,6,0,7,0,8,0,9,0):Do(2)
+				:Sequential(10,17):Do(4)
+				:Add(10,0,11,0,12,0,13,0,14,0,15,0,16,0,17,0):Do(2)
+				:SetTiming( 1/30 )
 		}
 	},
-	Cut = {
+	TakedownAlleyFlash = {
 		Frames = {
-			[1] = "[OFF] Left_Front Right_Front",			
+			[1] = "[W] 39 40 41 42",
+			[2] = "[W] 39 41",
+			[3] = "[W] 40 42",
 		},
 		Sequences = {
-			["FRONT"] = { 1 },
-		}
-	},
-	Cut_Front = {
-		Frames = {
-			[1] = "[OFF] Left_Front Right_Front 39 40 43 44"
-		},
-		Sequences = {
-			["ENABLED"] = { 1 }
-		}
-	},
-	Cut_Rear = {
-		Frames = {
-			[1] = "[OFF] Left_Rear Right_Rear"
-		},
-		Sequences = {
-			["ENABLED"] = { 1 }
-		}
-	},
-	DVI = {
-		Off = "~OFF",
-		Frames = {
-			[1] = "[~1] @01 @03 @05 @07 @09 @11 @13 @15 @17",
-			[2] = "[~2] @02 @04 @06 @08 @10 @12 @14 @16 @18",
+			["DEBUG"] = { 3 },
 
-			[3] = "[~1] @01 @03 @13 @15 @17 [~2] @02 @04 @14 @16 @18",
-			[4] = "[~1] @05 @07 @09 @11 [~2] @06 @08 @10 @12",
-
-			[5] = "[~1] @01 @05 @09 @13 @17 [~2] @04 @08 @12 @16",
-			[6] = "[~1] @03 @07 @11 @15 [~2] @02 @06 @10 @14 @18",
-		},
-		Sequences = {
-			["ALT"] = sequence():Alternate( 01, 02, 12 ),
-			["CEN"] = sequence():Alternate( 03, 04, 12 ),
-			["MIX"] = sequence():Alternate( 05, 06, 12 ),
-		}
-	},
-	DVI_Marker = {
-		Frames = {
-			[0] = "[~1*0.5] Left [~2*0.5] Right",
-			[1] = "[~1] @01 @03 @13 @15 @17 [~2] @02 @04 @14 @16 @18",
-			[2] = "[~1] @05 @07 @09 @11 [~2] @06 @08 @10 @12",
-		},
-		Sequences = {
-			["CEN"] = sequence():Alternate( 1, 2, 12 ),
-		}
-	},
-	Full = {
-		Frames = {
-			[1] = "[1] Left_Front [2] Right_Rear",
-			[2] = "[2] Right_Front [1] Left_Rear",
-
-			[3] = "[1] @01 @03 @13 @15 @17 [2] @02 @04 @14 @16 @18",
-			[4] = "[1] @05 @07 @09 @11 [2] @06 @08 @10 @12",
-
-			[5] = "[1] @01 @05 @09 @13 @17 [2] @04 @08 @12 @16",
-			[6] = "[1] @03 @07 @11 @15 [2] @02 @06 @10 @14 @18",
-
-			[7] = "[1] Left [2] Right",
-
-			[8] = "[1] @01 @03 @05 @09 [2] @08 @18 @16 @14 @12",
-			[9] = "[2] @02 @04 @06 @10 [1] @11 @13 @15 @17 @07"
-		},
-		Sequences = {
-			["SCAN"] = sequence()
-				:FlashHold( { 5, 6 }, 2, 4 ):Do( 2 ):Gap()
-				:Alternate( 3, 4, 9 ):Do( 2 ):Gap()
-				:FlashHold( 7, 3, 6 ):Gap( 6 ):FlashHold( 7, 3, 6 ):Gap( 6 )
-				:Alternate( 1, 2, 9 ):Do( 2 ):Gap(),
-			["SCAN_FAST"] = sequence()
-				:FlashHold( { 5, 6 }, 2, 2 ):Do( 2 ):Gap()
-				:Alternate( 3, 4, 4 ):Do( 2 ):Gap()
-				:FlashHold( 7, 3, 4 ):Gap( 3 ):FlashHold( 7, 3, 4 ):Gap( 3 )
-				:Alternate( 1, 2, 4 ):Do( 2 ):Gap(),
-			["STEADYBURN"] = { 7 },
-			["YELP"] = { 7, 7, 7, 0, 0, 7, 7, 7, 0, 0 },
-			["WAIL"] = sequence():Add( 1, 1, 0, 2, 2, 0 ):SetVariableTiming( 1/32, 1/12, 0.66 ),
-			["ALERT"] = { 7, 7, 0 },
-			["PIER"] = { 7, 0 },
-			["TIMING"] = sequence():Alternate( 1, 2 ):SetVariableTiming( 1/24, 1/4, 1 ),
-			["HORN"] = { 7 },
-			["T4"] = sequence():FlashHold( { 1, 2 }, 3, 4 ),
-			-- Based on USCP patterns
-			["QUAD"] = sequence():QuadFlash( 1, 2 ),
-			["QUAD_MODIFIED"] = sequence():QuadFlash( 8, 9 ),
-			["TRIP_MODIFIED"] = sequence():TripleFlash( 8, 9 ),
+			["STAGE3"] = sequence()
+			:Alternate(2,3,4):Do(4)
+			:FlashHold(2,3,4):FlashHold(3,3,4):FlashHold(2,3,4):FlashHold(3,3,4)
+			:SetTiming( 1/30 )
 		}
 	},
 	Takedown = {
@@ -304,10 +252,7 @@ COMPONENT.Segments = {
 			[3] = "[W] 39 40 43",
 		},
 		Sequences = {
-			["OFF"] = { 0 },
-			["ON"] = { 3 },
-			["ALT"] = sequence():Alternate( 1, 2, 8 ),
-			["TRI_FLASH"] = sequence():TripleFlash( 2, 1 ),
+			["ON"] = { 3 }
 		}
 	},
 	Flood = {
@@ -340,8 +285,7 @@ COMPONENT.Segments = {
 		},
 		Sequences = {
 			["OFF"] = { 0 },
-			["ON"] = { 1 },
-			["ALT"] = sequence():Alternate( 0, 1, 8 )
+			["ON"] = { 1 }
 		}
 	},
 	Alley_Right = {
@@ -350,94 +294,7 @@ COMPONENT.Segments = {
 		},
 		Sequences = {
 			["OFF"] = { 0 },
-			["ON"] = { 1 },
-			["ALT"] = sequence():Alternate( 0, 1, 8 )
-		}
-	},
-	Left = {
-		Frames = {
-			[1] = "[1] Left_Front Left_Rear"
-		},
-		Sequences = {
-			["FLASH"] = sequence():Alternate( 1, 0, 16 )
-		}
-	},
-	Right = {
-		Frames = {
-			[1] = "[2] Right_Front Right_Rear"
-		},
-		Sequences = {
-			["FLASH"] = sequence():Alternate( 1, 0, 16 )
-		}
-	},
-	White = {
-		Off = "PASS",
-		-- FrameDuration = 1/24,
-		Frames = {
-			[1] = "[W] @01 @05 @04 @08 @09",
-			[2] = "[W] @02 @06 @03 @07 @10",
-			[3] = "[W] @01 @08 @09",
-			[4] = "[W] @03 @06",
-			[5] = "[W] @04 @05",
-			[6] = "[W] @02 @07 @10",
-			[7] = "[W] Left_Front @10",
-			[8] = "[W] Right_Front @09",
-			[9] = "[W] @07 @05 @02 @04 @10",
-			[10] = "[W] @05 @03 @04 @06",
-			[11] = "[W] @03 @01 @06 @08 @09",
-			[12] = "[W] Left_Front @10 Right_Front @09",
-			[13] = "[W] @09 @07 @05 @02 @04",
-			[14] = "[W] @01 @03 @05 @07 @09 @02 @04 @06 @08 @10",
-			[15] = "[W] @03 @01 @06 @08 @10",
-			[16] = "[W] @07 @09 @08 @10 @01 @02",
-			[17] = "[W] @07 @05 @06 @08",
-			[18] = "[W] @05 @03 @04 @06",
-			[19] = "[W] @03 @01 @02 @04",
-		},
-		Sequences = {
-			["FLASH"] = sequence()
-							:Add( 9, 9, 0, 10, 10, 0, 11, 11, 0, 10, 10, 0 ):Do( 4 )
-							:FlashHold( { 1, 2 }, 3, 4 ):Do( 2 )
-							:Add( 9, 9, 0, 10, 10, 0, 11, 11, 0, 10, 10, 0 ):Do( 4 )
-							:Alternate( 7, 8, 10 ):Do( 2 ),
-			["YELP"] = sequence():Add( 1, 1, 1, 0, 0, 2, 2, 2, 0, 0 ),
-			["WAIL"] = sequence():Add( 8, 8, 0, 7, 7, 0 ):SetVariableTiming( 1/32, 1/12, 0.66 ),
-			["PIER"] = sequence():Add( 16, 17, 18, 19 ),
-			-- ["PIER"] = sequence():Add( 13, 0, 13, 0, 14, 0, 15, 0, 15, 0, 14, 0 ),
-			["ALERT"] = sequence():Add( 0, 12 ),
-			["T4"] = sequence():FlashHold( { 8, 7 }, 3, 4 ),
-			["HORN"] = { 12 }
-		}
-	},
-	Traffic_DVI = {
-		Off = "~OFF",
-		Frames = {
-			-- [0] = "[~R] @11 @13 @15 @17 [~B] @18 @16 @14 @12",
-			[1] = "[~TA] @12",
-			[2] = "[~TA] @12 @14",
-			[3] = "[~TA] @12 @14 @16",
-			[4] = "[~TA] @12 @14 @16 @18 @17",
-			[5] = "[~TA] @12 @14 @16 @18 @17 @15",
-			[6] = "[~TA] @12 @14 @16 @18 @17 @15 @13",
-			[7] = "[~TA] @12 @14 @16 @18 @17 @13 @15 @11",
-			[8] = "[~TA] @14 @16 @18 @17 @13 @15 @11",
-			[9] = "[~TA] @16 @18 @17 @13 @15 @11",
-			[10] = "[~TA] @18 @17 @15 @13 @11",
-			[11] = "[~TA] @15 @13 @11",
-			[12] = "[~TA] @13 @11",
-			[13] = "[~TA] @11",
-			[14] = "[~TA] @17 @18",
-			[15] = "[~TA] @15 @17 @18 @16",
-			[16] = "[~TA] @13 @15 @17 @18 @16 @14",
-			[17] = "[~TA] @11 @13 @15 @17 @18 @16 @14 @12",
-			[18] = "[~TA] @11 @13 @15 @16 @14 @12",
-			[19] = "[~TA] @11 @13 @14 @12",
-			[20] = "[~TA] @11 @12",
-		},
-		Sequences = {
-			["LEFT"] = sequence():Sequential( 1, 13 ):Add( 0, 13, 0, 13, 0 ):StretchAll( 4 ),
-			["RIGHT"] = sequence():Sequential( 13, 1 ):Add( 0, 1, 0, 1, 0 ):StretchAll( 4 ),
-			["CENOUT"] = sequence():Sequential( 14, 20 ):Add( 0, 20, 0, 20, 0 ):StretchAll( 6 )
+			["ON"] = { 1 }
 		}
 	},
 	Traffic = {
@@ -470,178 +327,24 @@ COMPONENT.Segments = {
 			["CENOUT"] = sequence():Sequential( 14, 20 ):Add( 0, 20, 0, 20, 0 ):StretchAll( 4 )
 		}
 	},
-	Brake = {
-		Frames = {
-			[1] = "[1] @11 @13 @15 @17 [2] @18 @16 @14 @12"
-		},
-		Sequences = {
-			BRAKE = sequence():Add( 1, 0, 1, 0, 1 ):SetRepeating( false )
-		}
-	},
-	Test = {
-		Frames = {
-			[1] = "[~(1,1)B*0.5] @01 @02 @03 @04",
-			[2] = "[~(1,1)B*0.9] @01 @02 @03 @04",
-			[3] = "[B] @01 @02 @03 @04 @05 @06 @07 @08 @09",
-			[4] = "[G] @01 @02 @03 @04 @05 @06 @07 @08 @09",
-		},
-		Sequences = {
-			["TEST"] = sequence():Alternate( 1, 2 ):SetTiming( 1 ),
-			["PHASE"] = sequence():Alternate( 3, 4, 16 ),
-			["PHASE:A"] = sequence():Alternate( 3, 4, 16 ),
-		}
-	},
 	Marker = {
 		Frames = {
-			[1] = "[1*0.6] @07 @09 [2*0.6] @08 @10",
-			[2] = "[1*0.6] @01 @03 @05 @07 @09 @11 @13 @15 @17 [2*0.6] @02 @04 @06 @08 @10 @12 @14 @16 @18",
+			[1] = "[B*0.6] @07 @09 @08 @10"
 		},
 		Sequences = {
-			["CORNER"] = { 1 },
-			["FULL"] = { 2 }
-		}
-	}
-}
-
-
-COMPONENT.Patterns = {
-	["DVI/ALT"] = { { "DVI", "ALT" } },
-	["DVI/CEN"] = { { "DVI", "CEN" } },
-	["DVI/MIX"] = { { "DVI", "MIX" } },
-	["DVI/REAR_ALT"] = { 
-		{ "DVI", "ALT" },
-		{ "Cut", "FRONT" }
-	},
-	["DVI/REAR_MIX"] = { 
-		{ "DVI", "MIX" },
-		{ "Cut", "FRONT" }
-	},
-	["SCAN"] = { { "Full", "SCAN" } },
-	["PHASETEST"] = {
-		{ "Left", "FLASH:180" },
-		{ "Right", "FLASH" },
-	},
-	["CLEAR"] = {
-		{ "Full", "SCAN_FAST" },
-		{ "White", "FLASH" },
-		{ "Takedown", "ALT" },
-		{ "Alley_Left", "ALT" },
-		{ "Alley_Right", "ALT" }
-	},
-	["WAIL"] = {
-		{ "Full", "WAIL" },
-		{ "White", "WAIL" }
-	},
-	["YELP"] = {
-		{ "Full", "YELP" },
-		{ "White", "YELP" }
-	},
-	["PIER"] = {
-		{ "Full", "PIER" },
-		{ "White", "PIER" }
-	},
-	["ALERT"] = {
-		{ "Full", "ALERT" },
-		{ "White", "ALERT" },
-	},
-	["T4"] = {
-		{ "Full", "T4" },
-		{ "White", "T4" }
-	}
-}
-
-COMPONENT.InputPriorities = {
-	["Virtual.WarningSiren"] = 63,
-	["Virtual.Brake"] = 101,
-	["Virtual.ParkedWarning"] = 64,
-	["Virtual.NightParkedWarning"] = 65,
-}
-
-COMPONENT.VirtualOutputs = {
-	["Virtual.WarningSiren"] = {
-		{
-			Mode = "AIR",
-			Conditions = {
-				["Emergency.Warning"] = { "MODE3" },
-				["Emergency.SirenOverride"] = { "AIR", "MAN" }
-			}
-		},
-		{
-			Mode = "T1",
-			Conditions = {
-				["Emergency.Warning"] = { "MODE3" },
-				["Emergency.Siren"] = { "T1" }
-			}
-		},
-		{
-			Mode = "T2",
-			Conditions = {
-				["Emergency.Warning"] = { "MODE3" },
-				["Emergency.Siren"] = { "T2" }
-			}
-		},
-		{
-			Mode = "T3",
-			Conditions = {
-				["Emergency.Warning"] = { "MODE3" },
-				["Emergency.Siren"] = { "T3" }
-			}
-		},
-		{
-			Mode = "T4",
-			Conditions = {
-				["Emergency.Warning"] = { "MODE3" },
-				["Emergency.Siren"] = { "T4" }
-			}
-		},
-	},
-	["Virtual.Brake"] = {
-		{
-			Mode = "BRAKE",
-			Conditions = {
-				["Vehicle.Brake"] = { "BRAKE" },
-				["Emergency.Warning"] = { "MODE1", "MODE2", "MODE3" }
-			}
-		}
-	},
-	["Virtual.ParkedWarning"] = {
-		{
-			Mode = "MODE3",
-			Conditions = {
-				["Vehicle.Transmission"] = { "PARK" },
-				["Emergency.Warning"] = { "MODE3" }
-			}
-		}
-	},
-	["Virtual.NightParkedWarning"] = {
-		{
-			Mode = "MODE3",
-			Conditions = {
-				["Vehicle.Transmission"] = { "PARK" },
-				["Emergency.Warning"] = { "MODE3" },
-				["Vehicle.Ambient"] = { "DARK" }
-			}
+			["CORNER"] = { 1 }
 		}
 	}
 }
 
 COMPONENT.Inputs = {
 	["Emergency.Warning"] = {
-		-- ["MODE1"] = { ["DVI_Marker"] = "CEN" },
-		["MODE1"] = "DVI/REAR_ALT",
-		["MODE2"] = "SCAN",
-		["MODE3"] = "CLEAR",
-	},
-	["Virtual.WarningSiren"] = {
-		["T1"] = "WAIL",
-		["T2"] = "YELP",
-		["T3"] = "PIER",
-		["T4"] = "T4",
-		["AIR"] = "ALERT",
-	},
-	["Emergency.SirenOverride"] = {
-		["AIR"] = { White = "HORN" },
-		["MAN"] = { Full = "STEADYBURN" }
+		["MODE1"] = { All = "STAGE1" },
+		["MODE2"] = { All = "STAGE2" },
+		["MODE3"] = { 
+			All = "STAGE3",
+			TakedownAlleyFlash = "STAGE3"
+		}
 	},
 	["Emergency.SceneForward"] = {
 		["ON"] = { Takedown = "ON" },
@@ -660,28 +363,5 @@ COMPONENT.Inputs = {
 	},
 	["Emergency.Marker"] = {
 		["ON"] = { Marker = "CORNER" }
-	},
-	["Virtual.Brake"] = {
-		["BRAKE"] = { Brake = "BRAKE" }
-	},
-	["Emergency.Cut"] = {
-		["FRONT"] = { Cut_Front = "ENABLED" },
-		["REAR"] = { Cut_Rear = "ENABLED" }
-	},
-	["Virtual.ParkedWarning"] = {
-		["MODE3"] = { 
-			DVI_Marker = "CEN",
-			Takedown = "OFF",
-			Alley_Left = "OFF",
-			Alley_Right = "OFF"
-		},
-	},
-	["Virtual.NightParkedWarning"] = {
-		["MODE3"] = { 
-			DVI_Marker = "CEN",
-			Takedown = "OFF",
-			Alley_Left = "OFF",
-			Alley_Right = "OFF"
-		},
 	}
 }

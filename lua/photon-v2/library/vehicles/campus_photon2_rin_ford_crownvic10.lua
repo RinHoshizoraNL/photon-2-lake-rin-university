@@ -93,7 +93,7 @@ VEHICLE.Equipment = {
 					{
 						Component = "photon_whe_liberty_48_lrupd",
 						Position = Vector( 0, -20, 68.65 ),
-						Angles = Angle( 1, 90, 0 ),
+						Angles = Angle( 0, 90, 0 ),
 						Scale = 0.84,
 						StateMap = "[B] 3 4 5 6 7 8 9 10 14 16 [R] 15 13 [A] 11 12 [W] AlleyLeft AlleyRight TakedownLeft TakedownRight",
 						Bones = {
