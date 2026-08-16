@@ -51,11 +51,11 @@ VEHICLE.Equipment = {
 		Category = "Siren",
 		Options = {
 			{
-				Option = "Whelen Epsilon",
+				Option = "Whelen",
 				Components = {
 					{
 						Name = "@siren_speaker",
-						Component = "siren_prototype",
+						Component = "lr_siren_prototype_test",
 						Position = Vector(0, 120, 27.1),
 						Angles = Angle(0, -90, 0),
 						Scale = 0,
@@ -67,6 +67,9 @@ VEHICLE.Equipment = {
 									Pitch = 100
 								}
 							}
+						},
+						Inputs = { 
+							["Emergency.SirenParkKill"] = { ["PARK"] = {} }
 						}
 					}
 				}
