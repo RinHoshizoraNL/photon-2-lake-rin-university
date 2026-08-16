@@ -329,10 +329,26 @@ COMPONENT.Segments = {
 	},
 	Marker = {
 		Frames = {
-			[1] = "[B*0.6] @07 @09 @08 @10"
+			[1] = "[B*0.75] @07 @09 @08 @10"
 		},
 		Sequences = {
 			["CORNER"] = { 1 }
+		}
+	},
+	Cut_Front = {
+		Frames = {
+			[1] = "[OFF] Left_Front Right_Front 39 40 43 44"
+		},
+		Sequences = {
+			["ENABLED"] = { 1 }
+		}
+	},
+	Cut_Rear = {
+		Frames = {
+			[1] = "[OFF] Left_Rear Right_Rear"
+		},
+		Sequences = {
+			["ENABLED"] = { 1 }
 		}
 	}
 }
@@ -351,10 +367,10 @@ COMPONENT.Inputs = {
 		["FLOOD"] = { Flood = "FLOOD" }
 	},
 	["Emergency.SceneLeft"] = {
-		["ON"] = { Flood_Left = "FULL" }
+		["ON"] = { Alley_Left = "ON" }
 	},
 	["Emergency.SceneRight"] = {
-		["ON"] = { Flood_Right = "FULL" }
+		["ON"] = { Alley_Right = "ON" }
 	},
 	["Emergency.Directional"] = {
 		["LEFT"] = { Traffic = "LEFT" },
@@ -363,5 +379,9 @@ COMPONENT.Inputs = {
 	},
 	["Emergency.Marker"] = {
 		["ON"] = { Marker = "CORNER" }
+	},
+	["Emergency.Cut"] = {
+		["FRONT"] = { Cut_Front = "ENABLED" },
+		["REAR"] = { Cut_Rear = "ENABLED" }
 	}
 }

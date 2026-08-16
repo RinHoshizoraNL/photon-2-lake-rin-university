@@ -8,6 +8,17 @@ VEHICLE.Author		= "Rin Hoshizora"
 
 local sequence = Photon2.SequenceBuilder.New
 
+VEHICLE.Siren = {
+    [1] = {
+		T1 = "whelen_295hfsa6/wail",
+		T2 = "whelen_295hfsa6/yelp",
+		T3 = "whelen_295hfsa6/piercer",
+		T4 = "whelen_295hfsa6/hilo",
+		AIR = "whelen_295hfsa6_lrupd_horn/horn",
+		MAN = "whelen_295hfsa6/wail"
+	}
+}
+
 VEHICLE.Equipment = {
 	{
 		Category = "Livery",
@@ -33,15 +44,23 @@ VEHICLE.Equipment = {
 				Option = "Whelen Epsilon",
 				Components = {
 					{
-						Name = "@siren",
+						Name = "@siren_speaker",
 						Component = "siren_prototype",
 						Position = Vector(0, 120, 27.1),
 						Angles = Angle(0, -90, 0),
 						Scale = 0,
-						Siren = "whelen_epsilon"
-					},
+						Siren = 1,
+						Templates = {
+							["Sound"] = { 
+								Tone = {
+									DSP = 0,
+									Pitch = 100
+								}
+							}
+						}
+					}
 				}
-			},
+			}
 		}
 	},
 	{
@@ -205,6 +224,14 @@ VEHICLE.Equipment = {
 									["STAGE3"] = sequence():FlashHold(1,2,5):AppendPhaseGap():SetTiming(1/30)
 								}
 							},
+							LightCutSCPD = {
+								Frames = {
+									[1] = "[OFF] Light"
+								},
+								Sequences = {
+									["CUT"] = { 1 }
+								}
+							}
 						},
 						Inputs = {
 							["Emergency.Warning"] = {
@@ -213,6 +240,10 @@ VEHICLE.Equipment = {
 								["MODE3"] = {
 									LightSCPD = "STAGE3"
 								}
+							},
+							["Emergency.Cut"] = {
+								["FRONT"] = { LightCutSCPD = "CUT" },
+								["REAR"] = {}
 							}
 						}
 					},
@@ -276,8 +307,12 @@ VEHICLE.Equipment = {
 						Component = "photon_standard_cvpi10",
 						Segments = {
 							["Headlight_flashers"] = {
+								Frames = {
+									[4] = "[PASS] 1 21 19 9 11 30 2 22 20 10 12 31"
+								},
 								Sequences = {
-									STAGE3 = sequence():Alternate(1,2,6)
+									STAGE3 = sequence():Alternate(1,2,6),
+									CUT = { 4 }
 								}
 							},
 							["Rear_flashers_SCPD"] = {
@@ -285,9 +320,11 @@ VEHICLE.Equipment = {
 								Frames = {
 									[1] = "15:~RI 16:~RI",
 									[2] = "[W] 17 18",
+									[3] = "[PASS] 15 16 17 18"
 								},
 								Sequences = {
-									STAGE3 = sequence():QuintFlash(2,1)
+									STAGE3 = sequence():QuintFlash(2,1),
+									CUT = { 3 }
 								}
 							}
 						},
@@ -297,6 +334,10 @@ VEHICLE.Equipment = {
 									Headlight_flashers = "STAGE3",
 									Rear_flashers_SCPD = "STAGE3"
 								}
+							},
+							["Emergency.Cut"] = {
+								["FRONT"] = { Headlight_flashers = "CUT" },
+								["REAR"] = { Rear_flashers_SCPD = "CUT" }
 							}
 						}
 					}
@@ -344,6 +385,10 @@ VEHICLE.Equipment = {
 								["MODE3"] = {
 									LightSCPD = "STAGE3"
 								}
+							},
+							["Emergency.Cut"] = {
+								["FRONT"] = {},
+								["REAR"] = { LightCutSCPD = "CUT" }
 							}
 						},
 						RenderGroup = RENDERGROUP_OPAQUE
@@ -370,15 +415,17 @@ VEHICLE.Equipment = {
 		Category = "Spotlights",
 		Options = {
 			{
-				Option = "Pillar Spotlights",
+				Option = "Dual Spotlights",
 				Components = {
 					{
+						Name = "@spotlight_left",
 						Component = "photon_par46_left",
 						Position = Vector( -35.06, 26.46, 49.282 ),
 						Angles = Angle( 0, 0, 0 ),
 						Scale = 1,
 					},
                     {
+						Name = "@spotlight_right",
 						Component = "photon_par46_right",
 						Position = Vector( 35.06, 26.46, 49.282 ),
 						Angles = Angle( 0, 0, 0 ),
@@ -387,9 +434,21 @@ VEHICLE.Equipment = {
 				},
 				BodyGroups = {
 					{ BodyGroup = "door_l_notch", Value = 0 },
-					{ BodyGroup = "door_r_notch", Value = 0 },
+					{ BodyGroup = "door_r_notch", Value = 0 }
 				}
 			},
+			{
+				Option = "Single Spotlight",
+				Components = {
+					{
+						Inherit = "@spotlight_left"
+					}
+				},
+				BodyGroups = {
+					{ BodyGroup = "door_l_notch", Value = 0 },
+					{ BodyGroup = "door_r_notch", Value = 1 }
+				}
+			}
 		}
 	},
 	{

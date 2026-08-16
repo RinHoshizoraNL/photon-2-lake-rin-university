@@ -12,6 +12,17 @@ VEHICLE.SubMaterials = {
 	[15] = "photon/common/blank"
 }
 
+VEHICLE.Siren = {
+    [1] = {
+		T1 = "whelen_gamma_new/wail",
+		T2 = "whelen_gamma_new/yelp",
+		T3 = "whelen_gamma_new/piercer",
+		T4 = "whelen_gamma_new/hilo",
+		AIR = "whelen_gamma_new/airhorn",
+		MAN = "whelen_gamma_new/wail"
+	}
+}
+
 VEHICLE.Equipment = {
 	{
 		Category = "Livery",
@@ -43,15 +54,23 @@ VEHICLE.Equipment = {
 				Option = "Whelen Epsilon",
 				Components = {
 					{
-						Name = "@siren",
+						Name = "@siren_speaker",
 						Component = "siren_prototype",
 						Position = Vector(0, 120, 27.1),
 						Angles = Angle(0, -90, 0),
 						Scale = 0,
-						Siren = "whelen_gamma_new"
-					},
+						Siren = 1,
+						Templates = {
+							["Sound"] = { 
+								Tone = {
+									DSP = 0,
+									Pitch = 100
+								}
+							}
+						}
+					}
 				}
-			},
+			}
 		}
 	},
 	{
@@ -63,9 +82,16 @@ VEHICLE.Equipment = {
 					{
 						Component = "photon_standard_chevcap13",
 						Segments = {
-							["HighBeams"] = {
+							["HighBeamsFlasherSCPD"] = {
+								Frames = {
+									[1] = "3 4",
+									[2] = "3",
+									[3] = "4",
+									[4] = "[PASS] 3 4"
+								},
 								Sequences = {
-									WIGWAG_SCPD = sequence():Add(2,2,2,2,2,0,0,2,2,2,2,2,0,0,3,3,3,3,3,0,0,3,3,3,3,3,0,0)
+									WIGWAG_SCPD = sequence():Add(2,2,2,2,2,0,0,2,2,2,2,2,0,0,3,3,3,3,3,0,0,3,3,3,3,3,0,0),
+									CUT = { 4 }
 								}
 							},
 							["RearSignalFlasherSCPD"] = {
@@ -73,10 +99,12 @@ VEHICLE.Equipment = {
 								Frames = {
 									[1] = "[B] 7",
 									[2] = "[B] 8",
-									[3] = "[B] 7 8"
+									[3] = "[B] 7 8",
+									[4] = "[PASS] 7 8"
 								},
 								Sequences = {
 									STAGE3 = sequence():QuadFlash( 1, 2 ),
+									CUT = { 4 }
 								}
 							},
 							["RearFlashersSCPD"] = {
@@ -85,9 +113,11 @@ VEHICLE.Equipment = {
 									[1] = "[~R] 9 10 [~SW] 12 13",
 									[2] = "[~R] 9 10",
 									[3] = "[~SW] 12 13",
+									[4] = "[PASS] 9 10 12 13"
 								},
 								Sequences = {
-									STAGE3 = sequence():Alternate( 2, 3, 4 )
+									STAGE3 = sequence():Alternate( 2, 3, 4 ),
+									CUT = { 4 }
 								}
 							}
 						},
@@ -96,9 +126,16 @@ VEHICLE.Equipment = {
 								["MODE1"] = {},
 								["MODE2"] = {},
 								["MODE3"] = {
-									HighBeams = "WIGWAG_SCPD",
+									HighBeamsFlasherSCPD = "WIGWAG_SCPD",
 									RearSignalFlasherSCPD = "STAGE3",
 									RearFlashersSCPD = "STAGE3"
+								}
+							},
+							["Emergency.Cut"] = {
+								["FRONT"] = { HighBeamsFlasherSCPD = "CUT" },
+								["REAR"] = {
+									RearSignalFlasherSCPD = "CUT",
+									RearFlashersSCPD = "CUT"
 								}
 							}
 						}
@@ -229,6 +266,14 @@ VEHICLE.Equipment = {
 									["STAGE3"] = sequence():FlashHold(1,2,5):AppendPhaseGap():SetTiming(1/30)
 								}
 							},
+							LightCutSCPD = {
+								Frames = {
+									[1] = "[OFF] Light"
+								},
+								Sequences = {
+									["CUT"] = { 1 }
+								}
+							}
 						},
 						Inputs = {
 							["Emergency.Warning"] = {
@@ -239,6 +284,10 @@ VEHICLE.Equipment = {
 								["MODE3"] = {
 									LightSCPD = "STAGE3"
 								}
+							},
+							["Emergency.Cut"] = {
+								["FRONT"] = { LightCutSCPD = "CUT" },
+								["REAR"] = {}
 							}
 						}
 					},
@@ -283,6 +332,10 @@ VEHICLE.Equipment = {
 								["MODE3"] = {
 									LightSCPD = "STAGE3:180"
 								}
+							},
+							["Emergency.Cut"] = {
+								["FRONT"] = {},
+								["REAR"] = { LightCutSCPD = "CUT" }
 							}
 						},
 						RenderGroup = RENDERGROUP_OPAQUE
@@ -333,7 +386,7 @@ VEHICLE.Equipment = {
 									["STAGE2"] = sequence():Add(1,1,1,1,1,1,1,1,0,0):AppendPhaseGap(),
 									["STAGE3"] = sequence():QuintFlash(1,0)
 								}
-							},
+							}
 						},
 						Inputs = {
 							["Emergency.Warning"] = {
@@ -371,15 +424,17 @@ VEHICLE.Equipment = {
 		Category = "Spotlights",
 		Options = {
 			{
-				Option = "Pillar Spotlights",
+				Option = "Dual Spotlights",
 				Components = {
 					{
+						Name = "@spotlight_left",
 						Component = "photon_whe_par46_left",
 						Position = Vector( -32, 27, 53 ),
 						Angles = Angle( 0, 0, 0 ),
 						Scale = 1,
 					},
 					{
+						Name = "@spotlight_right",
 						Component = "photon_whe_par46_right",
 						Position = Vector( 32, 27, 53 ),
 						Angles = Angle( 0, 0, 0 ),
@@ -389,8 +444,16 @@ VEHICLE.Equipment = {
 							["Emergency.SceneForward"] = { ["ON"] = {} },
 						}
 					}
-				},
+				}
 			},
+			{
+				Option = "Single Spotlight",
+				Components = {
+					{
+						Inherit = "@spotlight_left"
+					}
+				}
+			}
 		}
 	},
     {
@@ -400,30 +463,14 @@ VEHICLE.Equipment = {
 				Option = "Hubcaps",
 				BodyGroups = {
 					{ BodyGroup = "hubcaps", Value = 1 },
-				},
+				}
 			},
             {
 				Option = "Steelies",
 				BodyGroups = {
 					{ BodyGroup = "hubcaps", Value = 0 },
-				},
-			},
-		}
-	},
-	{
-		Category = "Spotlight",
-		Options = {
-			{
-				Option = "Pillar Spotlight",
-				Components = {
-					{
-						Component = "photon_whe_par46_left",
-						Position = Vector( -32, 27, 53 ),
-						Angles = Angle( 0, 0, 0 ),
-						Scale = 1,
-					},
-				},
-			},
+				}
+			}
 		}
 	},
 	{
@@ -445,6 +492,13 @@ VEHICLE.Equipment = {
 						},
 						RenderGroup = RENDERGROUP_OPAQUE,
 					},
+					{
+						Component = "photon_sos_observe",
+						Position = Vector( 0, -7, 64.3),
+						Angles = Angle( 2, 90, 180 ),
+						Scale = 1,
+						RenderGroup = RENDERGROUP_OPAQUE
+					}
 				},
 				Props = {
 					{

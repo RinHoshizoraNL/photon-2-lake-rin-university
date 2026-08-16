@@ -8,6 +8,17 @@ VEHICLE.Author		= "Rin Hoshizora"
 
 local sequence = Photon2.SequenceBuilder.New
 
+VEHICLE.Siren = {
+    [1] = {
+		T1 = "whelen_epsilon/wail_alt",
+		T2 = "whelen_epsilon/yelp_alt",
+		T3 = "whelen_gamma_new/piercer",
+		T4 = "whelen_gamma_new/hilo",
+		AIR = "whelen_gamma_new/airhorn",
+		MAN = "whelen_epsilon/wail_alt"
+	}
+}
+
 VEHICLE.Equipment = {
 	{
 		Category = "Livery",
@@ -39,34 +50,56 @@ VEHICLE.Equipment = {
 				Option = "Whelen Epsilon",
 				Components = {
 					{
-						Name = "@siren",
+						Name = "@siren_speaker",
 						Component = "siren_prototype",
 						Position = Vector(0, 120, 27.1),
 						Angles = Angle(0, -90, 0),
 						Scale = 0,
-						Siren = "whelen_gamma_new"
-					},
+						Siren = 1,
+						Templates = {
+							["Sound"] = { 
+								Tone = {
+									DSP = 0,
+									Pitch = 100
+								}
+							}
+						}
+					}
 				}
-			},
+			}
 		}
 	},
 	{
 		Category = "Wheels",
 		Options = {
 			{
-				Option = "AWD Hubcaps",
+				Option = "Hubcaps (AWD)",
 				BodyGroups = {
-					{ BodyGroup = "wheels_front", Value = 4 },
-					{ BodyGroup = "wheels_rear", Value = 4 },
-				},
+					["wheels_front"] = 4,
+					["wheels_rear"] = 4
+				}
 			},
-            {
-				Option = "RWD Hubcaps",
+			{
+				Option = "Hubcaps (RWD)",
 				BodyGroups = {
-					{ BodyGroup = "wheels_front", Value = 1 },
-					{ BodyGroup = "wheels_rear", Value = 1 },
-				},
+					["wheels_front"] = 1,
+					["wheels_rear"] = 1
+				}
 			},
+			{
+				Option = "Steelies (AWD)",
+				BodyGroups = {
+					["wheels_front"] = 3,
+					["wheels_rear"] = 3
+				}
+			},
+			{
+				Option = "Steelies (RWD)",
+				BodyGroups = {
+					["wheels_front"] = 0,
+					["wheels_rear"] = 0
+				}
+			}
 		}
 	},
 	{
@@ -78,15 +111,26 @@ VEHICLE.Equipment = {
 					{
 						Component = "photon_standard_sgmchar15",
 						Segments = {
+							WigWag = {
+								Frames = {
+									[3] = "[PASS] 1 2",
+								},
+								Sequences = {
+									["CUT"] = { 3 },
+								}
+							},
 							TailFlasherSCPD = {
 								Frames = {
 									[1] = "10 13 14 15 16",
 
 									[2] = "10 15 16",
 									[3] = "13 14",
+
+									[4] = "10 13 14 15 16",
 								},
 								Sequences = {
 									["OFF"] = { 0 },
+									["CUT"] = { 4 },
 
 									["STAGE3"] = sequence():QuadFlash(2,3)
 								}
@@ -98,6 +142,14 @@ VEHICLE.Equipment = {
 								["MODE3"] = {
 									WigWag = "WIGWAG",
 									TailFlasherSCPD = "STAGE3"
+								}
+							},
+							["Emergency.Cut"] = {
+								["FRONT"] = {
+									WigWag = "CUT"
+								},
+								["REAR"] = {
+									TailFlasherSCPD = "CUT"
 								}
 							}
 						}
@@ -159,17 +211,30 @@ VEHICLE.Equipment = {
 								},
 								Sequences = {
 									["DEBUG"] = { 1 },
+									["OFF"] = { 0 },
 
 									["STAGE1"] = sequence():Alternate(1,0,10):SetTiming(1/30),
 									["STAGE3"] = sequence():FlashHold(1,2,4):AppendPhaseGap():SetTiming(1/30)
 								}
 							},
+							LightCutSCPD = {
+								Frames = {
+									[1] = "[OFF] Light"
+								},
+								Sequences = {
+									["CUT"] = { 1 }
+								}
+							}
 						},
 						Inputs = {
 							["Emergency.Warning"] = {
 								["MODE1"] = {},
 								["MODE2"] = { LightSCPD = "STAGE1" },
 								["MODE3"] = { LightSCPD = "STAGE3" }
+							},
+							["Emergency.Cut"] = {
+								["FRONT"] = { LightCutSCPD = "CUT" },
+								["REAR"] = {}
 							}
 						}
 					},
@@ -203,6 +268,14 @@ VEHICLE.Equipment = {
 									["STAGE1"] = sequence():Alternate(1,2,10):SetTiming(1/30),
 									["STAGE3"] = sequence():FlashHold(1,2,4):FlashHold(2,2,4):SetTiming(1/30)
 								}
+							},
+							whelen_vertex_cut_SCPD = {
+								Frames = {
+									[1] = "[OFF] 1 2 3"
+								},
+								Sequences = {
+									["CUT"] = { 1 },
+								}
 							}
 						},
 						Inputs = {
@@ -210,6 +283,10 @@ VEHICLE.Equipment = {
 								["MODE1"] = {},
 								["MODE2"] = { whelen_vertex_SCPD = "STAGE1:180" },
 								["MODE3"] = { whelen_vertex_SCPD = "STAGE3" }
+							},
+							["Emergency.Cut"] = {
+								["FRONT"] = { whelen_vertex_cut_SCPD = "CUT" },
+								["REAR"] = {}
 							}
 						}
 					},
@@ -237,7 +314,7 @@ VEHICLE.Equipment = {
 						Inherit = "@grille_ion",
 						Name = "@rear_deck_ion",
 						Component = "photon_whe_ion_surface_bracket",
-						Position = Vector( 12, -85, 57.8 ),
+						Position = Vector( 12, -85, 57.42 ),
 						Angles = Angle( 180, 0, 180 ),
 						States = {
 							[1] = "B",
@@ -254,13 +331,17 @@ VEHICLE.Equipment = {
 								["MODE1"] = { LightSCPD = "STAGE1" },
 								["MODE2"] = { LightSCPD = "STAGE1" },
 								["MODE3"] = { LightSCPD = "STAGE3ALT" }
+							},
+							["Emergency.Cut"] = {
+								["FRONT"] = {},
+								["REAR"] = { LightCutSCPD = "CUT" }
 							}
 						},
 						RenderGroup = RENDERGROUP_OPAQUE
 					},
                     {
 						Inherit = "@rear_deck_ion",
-						Position = Vector( -12, -85, 57.8 ),
+						Position = Vector( -12, -85, 57.42 ),
 						Angles = Angle( 180, 0, 180 ),
 						Inputs = {
 							["Emergency.Warning"] = {
@@ -279,15 +360,17 @@ VEHICLE.Equipment = {
 		Category = "Spotlights",
 		Options = {
 			{
-				Option = "Pillar Spotlights",
+				Option = "Dual Spotlights",
 				Components = {
 					{
+						Name = "@spotlight_left",
 						Component = "photon_whe_par46_left",
 						Position = Vector( -34.5, 28, 58 ),
 						Angles = Angle( 0, 0, 0 ),
 						Scale = 1,
 					},
 					{
+						Name = "@spotlight_right",
 						Component = "photon_whe_par46_right",
 						Position = Vector( 34.5, 28, 58 ),
 						Angles = Angle( 0, 0, 0 ),
@@ -297,8 +380,16 @@ VEHICLE.Equipment = {
 							["Emergency.SceneForward"] = { ["ON"] = {} },
 						}
 					}
-				},
+				}
 			},
+			{
+				Option = "Single Spotlight",
+				Components = {
+					{
+						Inherit = "@spotlight_left"
+					}
+				}
+			}
 		}
 	},
 	{
@@ -323,6 +414,13 @@ VEHICLE.Equipment = {
 						},
 						RenderGroup = RENDERGROUP_OPAQUE,
 					},
+					{
+						Component = "photon_sos_observe",
+						Position = Vector( 0, -5, 71.5 ),
+						Angles = Angle( 11, 90, 180 ),
+						Scale = 1.1,
+						RenderGroup = RENDERGROUP_OPAQUE
+					}
 				},
 				Props = {
 					{
