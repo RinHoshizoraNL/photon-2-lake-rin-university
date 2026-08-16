@@ -33,6 +33,15 @@ VEHICLE.Equipment = {
 				},
 			},
 			{
+				Option = "Black (Breast Cancer Awareness)",
+				SubMaterials = {
+					{ Id = 4, Material = "rin/university/charger15/police_pink" }
+				},
+				BodyGroups = {
+					{ BodyGroup = "pushbar", Value = 0 }
+				},
+			},
+			{
 				Option = "White",
 				SubMaterials = {
 					{ Id = 4, Material = "rin/university/charger15/police_alt" }
