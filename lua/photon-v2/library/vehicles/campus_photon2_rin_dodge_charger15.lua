@@ -175,22 +175,22 @@ VEHICLE.Equipment = {
 				Components = {
 					{
 						Component = "photon_whe_legacy_48_lrupd",
-						Position = Vector( 0, -18, 75 ),
+						Position = Vector( 0, -18, 75.3 ),
 						Angles = Angle( 0, 90, 0 ),
 						Scale = 0.99,
 						BodyGroups = {
 							["takedown"] = 0,
 							["alley"] = 0,
 							["cable"] = 0,
-							["clamps"] = 1,
-							["feet"] = 1,
+							["clamps"] = 0,
+							["feet"] = 0,
 							["gels"] = 2
 						},
 						Bones = {
-							["foot_low_left"]		=	{ Vector( 0, 0, 0), Angle( 0, 0, 0 ), 1 },
-							["foot_low_right"]		=	{ Vector( 0, 0, 0), Angle( 0, 0, 0 ), 1 },
-							["clamp_low_left"]		=	{ Vector( 0.8, 0, -0.035), Angle( 0, 0, 0 ), 1 },
-							["clamp_low_right"]		=	{ Vector( -0.8, 0, -0.035), Angle( 0, 0, 0 ), 1 }
+							["foot_norm_left"]		=	{ Vector( -0.5, 0, 0), Angle( 0, 0, 0 ), 1 },
+							["foot_norm_right"]		=	{ Vector( 0.5, 0, 0), Angle( 0, 0, 0 ), 1 },
+							["clamp_norm_left"]		=	{ Vector( 0.85, 0, -0.08), Angle( 0, 0, 0 ), 1 },
+							["clamp_norm_right"]		=	{ Vector( -0.85, 0, -0.08), Angle( 0, 0, 0 ), 1 }
 						},
 						SubMaterials = {
 							[3] = "rin/university/props/legacy_gels",
