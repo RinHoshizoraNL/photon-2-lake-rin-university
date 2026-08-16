@@ -55,7 +55,7 @@ VEHICLE.Equipment = {
 				Components = {
 					{
 						Name = "@siren_speaker",
-						Component = "lr_siren_prototype_test",
+						Component = "siren_prototype_lrupd",
 						Position = Vector(0, 120, 27.1),
 						Angles = Angle(0, -90, 0),
 						Scale = 0,
